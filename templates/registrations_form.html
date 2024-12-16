@@ -1,0 +1,163 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+    .form-fields{
+        display:flex;
+        flex-direction:column;
+    }
+    section{ background-image:url(static/images/bg_service.png) }
+</style>
+<div class="flash-messages" id="">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for  category, message in messages %}
+                <div class="flash-messages alert-{{category}}"> {{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+</div>
+<br><br><br>
+<div class="user-info">
+    <div style="" class="img-cont">
+        <div width="90%"><img class="prf-image" src="static/images/{{user.image}}" alt=""/></div>
+    </div><br>
+    <h4 style="margin-bottom: 0;text-align: left;">{{user.name}}</h4>
+    <div class="icons-cont"><img class="icons" src='static/icons/email-icon.png' /><small class="">{{user.email}}</small></div>
+    <div class="icons-cont"><img class="icons" src='static/icons/church-icon.png' />{% if user.church_local %}<small class="">{{user.church_local}}, {{user.church_zone}}
+         , {{user.church_mission}} Mission</small></div>
+{% else %}<a href="/account">Finish Sign-up</a>{% endif %}
+{% if user.timestamp %}<small><b>Joined:</b> {{user.timestamp.strftime("%d %b %y")}}</small>{% endif %}
+</div><br>
+
+{% if event_details %}
+<div style="height:200hv !important;align-items:flex-start;" class="container finish-sign">
+
+  <div style="" class="flex-general">
+
+    <form style="background-color:;flex-direction:column;z-index:1000;" class="" _lpchecked="1" action="" method="post" enctype="multipart/form-data">
+        <h1 style="text-align: left;">Services<br> Registration <br> Form,<br><span style="font-size:15px;color:rgb(102, 102, 102)">{{event_details.event_title}},<br> {{event_details.start_date}} - 
+            {{event_details.end_date}},<br>
+            @{{event_details.event_venue}}</span></h1>
+        {{registration_form.hidden_tag()}}
+
+        <!-- Transaction ID  -->
+        <div id="transaction_id" class="group">
+            {{ registration_form.transaction_id.label }}<br>
+            {{ registration_form.transaction_id(class="form-control finish-sign-fmcontrl",placeholder="e.g. M0656774") }}<br>
+            {% if registration_form.transaction_id.errors %}
+            {% for error in registration_form.transaction_id.errors %}<span class="span-error" >*{{error}}</span>
+            {% endfor %}
+            {% endif %}
+        </div>
+
+        <!-- Payment platform  -->
+        <div id="payment_platform" class="group">
+            {{ registration_form.payment_platform.label }}<br>
+            {{ registration_form.payment_platform(class="form-control finish-sign-fmcontrl",placeholder="e.g. Momo") }}<br>
+            {% if registration_form.payment_platform.errors %}
+            {% for error in registration_form.payment_platform.errors %}<span class="span-error" >*{{error}}</span>
+            {% endfor %}
+            {% endif %}
+        </div>
+
+         <!-- Proof of Payment Image/Doc  -->
+        <div id="compulsury-pop" style="position: relative;" class="group">
+            {{ registration_form.pop_image.label }}<br>
+            {{ registration_form.pop_image(class="form-control finish-sign-fmcontrl") }}<br>
+            {% if registration_form.pop_image.errors %}
+                {% for error in registration_form.pop_image.errors %}<span class="span-error" >*{{error}}</span>{% endfor %}
+            {% endif %}
+        </div>
+
+        <!-- Registration Level  -->
+        <div class="group">
+            {{ registration_form.registration.label }}<br>
+            {{ registration_form.registration(class="form-control finish-sign-fmcontrl",placeholder="Structure") }}<br>
+            {% if registration_form.registration.errors %}
+            {% for error in registration_form.registration.errors %}<span class="span-error" >*{{error}}</span>
+            {% endfor %}
+            {% endif %}
+        </div>
+
+        <div  class="group">
+            {{registration_form.special_diet_bool.label}}
+            <div style="width:70px !important" class="accomo">{{registration_form.special_diet_bool(id="special_diet_bool",class="form-control finish-sign-fmcontrl")}}</div>
+        </div>
+
+        <div id="special_diet_container" class="group hidden">
+            {{ registration_form.special_diet(class="form-control",placeholder="Please Specify Diet")}}<br>
+            {% if registration_form.special_diet.errors %}
+                {% for error in registration_form.special_diet.errors %}<span class="span-error" >*{{error}}</span>
+                {% endfor %}
+            {% endif %}
+        </div><br>
+
+        <div style="" class="group">
+                <div>{{ registration_form.submit(class="btns") }}</div><br>
+                <!--<input class="btns" type="submit" value="Create Account" />-->
+                <!-- <div><a class="slinks-li" href="/login">Login</a></div> -->
+        </div>
+        <div style="" class="group">
+            <!-- <div><a class="slinks-li" href="/register">Forgot Password?</a></div> -->
+        </div>
+
+    </form>
+  </div>
+</div>
+{% else %}
+<h1 style="text-align:center">Sorry, There are No Upcoming Events Open at the Moment!</h1>
+<h1 style="text-align:center">Check Again Later</h1>
+<br>
+{% endif %}
+
+<script>
+    // document.addEventListener('DOMContentLoaded', function() {
+    //     const paymentPlatformSelect = document.querySelector('select[name="payment_platform"]');
+    //     const popImageComp = document.getElementById('compulsury-pop');
+    //     const popImagDefault = document.getElementById('default-pop');
+
+    //     function toggleFileFields() {
+    //         console.log("Change Identified: ", paymentPlatformSelect.value);
+
+            // $.post("/user_registration_form", { platform: paymentPlatformSelect.value }, function(response) {
+            //     // Optionally handle response if needed
+            // });
+
+
+            // Use the Fetch API
+            // fetch('/user_registration_form', {
+            //     method: 'POST',
+            //     headers: {
+            //         'Content-Type': 'application/json'
+            //     },
+            //     body: JSON.stringify({ platform: paymentPlatformSelect.value })
+            // })
+            // .then(response => response.json())
+            // .then(data => {
+            //     // Optionally handle response if needed
+            //     console.log(data);
+            //     console.log(data);
+            // })
+            // .catch(error => console.error('Error:', error));
+
+
+
+    //         if (paymentPlatformSelect.value === 'AGCC FNB Account') {
+    //             popImageComp.style.display = 'block'; // Show pop_image
+    //             popImageComp.required = 'true'
+    //         } else if (paymentPlatformSelect.value === '"My Regional Bank"') {
+    //             popImagDefault.style.display = 'block'; // Show pop_image_comp
+    //             popImageComp.required = 'false'
+    //         }else {
+    //             popImageComp.style.display = 'none'; // Hide pop_image_comp
+    //             popImagDefault.style.display = 'none'; // Hide pop_image_comp
+    //             popImageComp.required = 'false'
+    //         }
+    //     };
+
+    //     paymentPlatformSelect.addEventListener('change', toggleFileFields);
+    //     toggleFileFields(); // Run on initial load to set correct state
+    // });
+</script>
+{% endblock %}

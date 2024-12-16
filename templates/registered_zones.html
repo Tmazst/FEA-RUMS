@@ -1,0 +1,109 @@
+
+
+
+
+{% extends "base.html" %}
+
+{% block content %}
+<style type="text/css">
+    .analysis-table{background-color:#dfdfdf;width:max-content;margin:10px auto;border-radius: 10px;padding:10px}
+    .table-data{width:1200px;border-collapse: collapse;}
+    #mission-zones th{color: rgb(255, 255, 255);border-width: 2px;border-color: #dfdfdf;padding:8px 10px;font-weight:500;background-color:#363636;border-style: solid;font-size:14px;}
+    .table-data th{color: rgb(255, 255, 255);border-width: 2px;border-color: #dfdfdf;padding:8px 10px;font-weight:500;background-color:#148a37;border-style: solid;font-size:14px;}
+    .table-data td {font-size:13px;font-weight:500;border-width: 1px;padding: 8px;border-style: solid;border-left-color: #dfdfdf;
+        border-bottom-color: rgb(255, 255, 255);border-right-color: #dfdfdf;border-left-style: solid;}
+    .tftable {font-size:12px;color:#333333;width:100%;border-width: 1px;border-color: white;border-collapse: collapse;}
+    .tftable th {font-size:12px;background-color:#acc8cc;border-width: 2px;padding: 8px;border-style: solid;border-color: white;text-align:left;}
+    #children th {font-size:12px;background-color:#e9c5c5;border-width: 2px;padding: 8px;border-style: solid;border-color: white;text-align:left;}
+    .tftable tr {background-color:#d4e3e5;}
+    #children tr {background-color:#f3e4e4;}
+    .tftable td:first-child{width:75px}
+    .tftable td:nth-child(2){width:150px}
+    .tftable td:nth-child(3){width:75px}
+    .tftable td {font-size:12px;font-weight:500;border-width: 2px;padding: 8px;border-style: solid;border-color: white;}
+    .tftable tr:hover {background-color:#ffffff;}
+</style>
+<div class="flash-messages" class="btns">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for  category, message in messages %}
+                <div class="flash-messages alert-{{category}}"> {{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+</div>
+<br>
+<div style="justify-content: flex-start;padding:10px;width:70%;background-color: rgb(237, 238, 238);margin:0 auto;border-radius: 10px;" class="general-flex">
+    <a style="background-color:;z-index:500" href="/registered_users" ><div><img style="height:35px" class="icons" src='static/icons/table-icon.png' /></div></a>
+    <a style="background-color:;z-index:500"  href="/registrations" ><img style="height:35px" class="icons" src='static/icons/list-icon.png' /></a>
+</div><br>
+
+
+<div class="container-fea">
+    
+    <!-- <div onclick="showHideFbtns()" class="filter-subs general-flex"  style="justify-content: flex-start;"><div style="font-weight: 500;" class="">Show Registration Data</div>
+        <img id="cont-handle" class="" style="height:25px;margin-left: 0px;" src="static/icons/content-handle-icon.png" />
+    </div> -->
+    <div style="" id="stats-cont">
+        <h1 style="color:#333333" >{{mission}} Mission Zones<br><span class="spans"></span></h1>
+        <h5 style="color:#3d423f">Registration Update of All Zones under the {{mission}} Mission</h5>
+        <div class="analysis-table">
+            <table id="mission-zones" class="table-data" border="1">
+                <!-- Show Mission Stations Data Analysis  -->
+                <tr><th>Zone</th><th>Registered</th><th>VIP</th><th>Adults</th><th>Working Youth</th><th>Non Working Youth</th><th>Children</th></tr>
+                {% for zone in zones %}
+                    <!-- We are checking every entry with description e.g. 'fairview'  -->
+                    {% set num_val = pop_transactions.query.filter_by(church_mission=mission,church_zone=zone).all() %}
+                        {% set num_val_vip = pop_transactions.query.filter_by(church_mission=mission,church_zone=zone,reg_tag="VIP").all() %}
+                        {% set num_val_adults = pop_transactions.query.filter_by(church_mission=mission,church_zone=zone,reg_tag="Adults").all() %} <!---break line--->
+                        {% set num_val_wyouth = pop_transactions.query.filter_by(church_mission=mission,church_zone=zone,reg_tag="Working Youth").all() %}
+                        {% set num_val_non_wyouth = pop_transactions.query.filter_by(church_mission=mission,church_zone=zone,reg_tag="Non Working Youth").all() %}
+                        {% set num_val_children = pop_transactions.query.filter_by(church_mission=mission,church_zone=zone,reg_tag="Children").all() %}
+                            <tr onclick="window.location='#{{zone}}'">
+                                <td>{{zone}}</td><td>{{num_val | length}}</td><td>{{num_val_vip | length}}</td><td>{{num_val_adults | length}}</td><!---break line--->
+                                <td>{{num_val_wyouth | length}}</td><td>{{num_val_non_wyouth | length}}</td><td>{{num_val_children | length}}</td>
+                            </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div><br><br><br>
+
+
+
+    {% for zone in zones %}
+    <h3>{{loop.index}}. {{zone }}</h3>
+    <div style="" id="stats-cont">
+        <!-- <h1 >{{mission}} Zones<br><span class="spans"></span></h1> -->
+        <h5 style="color:#3d423f">Local Churches under {{zone}}</h5>
+        <div class="analysis-table">
+            <table class="table-data" border="1">
+                <!-- Show Mission Stations Data Analysis  -->
+                <tr><th>Zone</th><th>Registered</th><th>VIP</th><th>Adults</th><th>Working Youth</th><th>Non Working Youth</th><th>Children</th></tr>
+                
+                    <!-- We are checking every entry with description e.g. 'fairview'  -->
+                    {% set num_zones = pop_transactions.query.filter_by(church_zone=zone).all() %}
+                        {% for local in num_zones %}
+                            {% set num_reg_mem= pop_transactions.query.filter_by(church_local=local.church_local).all() %}
+                            {% set num_val_vip = pop_transactions.query.filter_by(church_local=local.church_local,reg_tag="VIP").all() %}
+                            {% set num_val_adults = pop_transactions.query.filter_by(church_local=local.church_local,reg_tag="Adults").all() %} <!---break line--->
+                            {% set num_val_wyouth = pop_transactions.query.filter_by(church_local=local.church_local,reg_tag="Working Youth").all() %}
+                            {% set num_val_non_wyouth = pop_transactions.query.filter_by(church_local=local.church_local,reg_tag="Non Working Youth").all() %}
+                            {% set num_val_children = pop_transactions.query.filter_by(church_local=local.church_local,reg_tag="Children").all() %}
+                            {% if local.church_mission == mission %}
+                            <tr onclick="window.location='/registered_local?loc={{local.church_local}}'">
+                                <td>{{local.church_local}}</td><td>{{num_reg_mem | length}}</td><td>{{num_val_vip | length}}</td><td>{{num_val_adults | length}}</td><!---break line--->
+                                <td>{{num_val_wyouth | length}}</td><td>{{num_val_non_wyouth | length}}</td><td>{{num_val_children | length}}</td>
+                            </tr>
+                            {% endif %}
+                        {% endfor %}
+                        
+                            
+                
+            </table>
+        </div>
+    </div>
+    {% endfor %}
+          
+        
+</div>
+{% endblock %}

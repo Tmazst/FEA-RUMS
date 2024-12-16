@@ -1,0 +1,138 @@
+
+
+
+
+{% extends "base.html" %}
+
+{% block content %}
+<div class="flash-messages" class="btns">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for  category, message in messages %}
+                <div class="flash-messages alert-{{category}}"> {{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+</div>
+<br>
+<div style="justify-content: flex-start;padding:10px;width:70%;background-color: rgb(237, 238, 238);margin:0 auto;border-radius: 10px;" class="general-flex">
+    <a style="background-color:;z-index:500" href="/registered_users" ><div><img style="height:35px" class="icons" src='static/icons/table-icon.png' /></div></a>
+    <a style="background-color:;z-index:500"  href="/registrations" ><img style="height:35px" class="icons" src='static/icons/list-icon.png' /></a>
+</div><br>
+
+
+<div class="container-fea">
+    <br>
+    <div onclick="showHideFbtns()" class="filter-subs general-flex"  style="justify-content: flex-start;"><div style="font-weight: 600;" class="">Show Registration Data</div>
+        <img id="cont-handle" class="" style="height:25px;margin-left: 0px;" src="static/icons/content-handle-icon.png" />
+    </div>
+    <div style="color:coral;font-size:12px">update of regitration figures</div>
+    <div style="display: none;" id="stats-cont">
+        
+        <h5 style="color:#0657b4;">Registration Statistics Arccoding to Mission Stations</h5>
+        <div class="analysis-table">
+            <table class="table-data" border="1">
+                <!-- Show Mission Stations Data Analysis  -->
+                <tr><th>Mission</th><th>Registered</th><th>VIP</th><th>Adults</th><th>Working Youth</th><th>Non Working Youth</th><th>Children</th></tr>
+                {% for mission in missions %}
+                    {% set num_val = pop_transactions.query.filter_by(church_mission=mission).all() %}
+                        {% set num_val_vip = pop_transactions.query.filter_by(church_mission=mission,reg_tag="VIP").all() %}
+                        {% set num_val_adults = pop_transactions.query.filter_by(church_mission=mission,reg_tag="Adults").all() %} <!---break line--->
+                        {% set num_val_wyouth = pop_transactions.query.filter_by(church_mission=mission,reg_tag="Working Youth").all() %}
+                        {% set num_val_non_wyouth = pop_transactions.query.filter_by(church_mission=mission,reg_tag="Non Working Youth").all() %}
+                        {% set num_val_children = pop_transactions.query.filter_by(church_mission=mission,reg_tag="Children").all() %}
+                        <!-- #onclick="openZones()" -->
+                            <tr onclick="window.location='/registered_zones?missn={{mission}}'">
+                                <a style="z-index:500" href="/registered_zones?missn={{mission}}"><td>{{mission}}</td></a><td>{{num_val | length}}</td><td>{{num_val_vip | length}}</td><td>{{num_val_adults | length}}</td><!---break line--->
+                                <td>{{num_val_wyouth | length}}</td><td>{{num_val_non_wyouth | length}}</td><td>{{num_val_children | length}}</td>
+                            </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+    <div style="width:100%;margin:10px auto;margin-top:150px">All Registration Entries</div>
+    <div id="contact-us" style="width:100%;margin:0px auto; padding:20px;border-radius: 20px;" class="border-spec">
+        
+                <h5 style="color:coral;margin:auto 0;text-align:center"><span style="font-size: 20px;">{{reg_details|length}}</span> Registered <span style="font-size: 20px;color:black">|</span>  
+                    <span style="color:rgb(107, 107, 107);margin:auto 0;text-align:center"><span style="font-size: 20px;">{{user_no_base|length}}</span> Users</span></h5>
+                    
+                <!-- <h5 style="color:rgb(107, 107, 107);margin:auto 0;text-align:center"><span style="font-size: 20px;">{{registered_children|length}}</span> Children </h5> -->
+
+            <h1 >Registration Entries<br><span class="spans"></span></h1><br>
+            <style type="text/css">
+                .analysis-table{background-color:#dfdfdf;width:max-content;margin:10px auto;border-radius: 10px;padding:10px}
+                .table-data{width:1200px;border-collapse: collapse;}
+                .table-data th{color: rgb(255, 255, 255);border-width: 2px;border-color: #dfdfdf;padding:8px 10px;font-weight:500;background-color:#0657b4;border-style: solid;font-size:14px;}
+                .table-data td {font-size:13px;font-weight:500;border-width: 1px;padding: 8px;border-style: solid;border-left-color: #dfdfdf;
+                    border-bottom-color: rgb(255, 255, 255);border-right-color: #dfdfdf;border-left-style: solid;}
+                .tftable {font-size:12px;color:#333333;width:100%;border-width: 1px;border-color: white;border-collapse: collapse;}
+                .tftable th {font-size:12px;background-color:#acc8cc;border-width: 2px;padding: 8px;border-style: solid;border-color: white;text-align:left;}
+                #children th {font-size:12px;background-color:#e9c5c5;border-width: 2px;padding: 8px;border-style: solid;border-color: white;text-align:left;}
+                .tftable tr {background-color:#d4e3e5;}
+                #children tr {background-color:#f3e4e4;}
+                .tftable td:first-child{width:75px}
+                .tftable td:nth-child(2){width:150px}
+                .tftable td:nth-child(3){width:75px}
+                .tftable td {font-size:12px;font-weight:500;border-width: 2px;padding: 8px;border-style: solid;border-color: white;}
+                .tftable tr:hover {background-color:#ffffff;}
+            </style>
+            <div style="display: flex;gap:5px;background-color:;">
+                <div style="width: 100%;background-color: ;overflow:auto">
+                    <h3>Registered Members</h3>
+                    <table class="tftable" border="1">
+                        <tr><th>Date</th><th>Name</th><th>Local Church</th><th>Zone</th><th>Mission</th><th>P.O.P</th><th>Registration Tag</th><th>Age Group</th><th>Region</th></tr>
+                        {% for entry in reg_details %}
+                        {% set user_info = users.query.get(entry.usr_id)%}
+                            <tr onclick="window.location='/reg_view_member?id={{user_info.id}}'"><td>{{entry.timestamp.strftime("%d %b %y")}}</td><td>{{user_info.name}}</td><td>{{user_info.church_local}}</td><td>{{user_info.church_zone}}</td><td>{{user_info.church_mission}}</td>
+                                {% if entry.pop_image and entry.transaction_id %}<td>Yes</td>{% else %}<td>No</td>{% endif %}<td>{{entry.registration}}</td><td>{{user_info.age_group}}</td>
+                                <td>{{user_info.church_region}}</td></tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+                
+    </div>
+
+
+
+
+    {% if needed %}
+    <div id="contact-us" style="width:100%;margin:150px auto; padding:20px;border-radius: 20px;" class="border-spec-child">
+        <h1 style="color:#641e1e">Registration For Children<br><span class="spans"></span></h1><br>
+            <!-- <h5 style="color:coral;margin:auto 0;text-align:center"><span style="font-size: 20px;">{{reg_details|length}} + {{registered_children|length}}</span> Registered <span style="font-size: 20px;color:black">|</span>  
+                <span style="color:rgb(107, 107, 107);margin:auto 0;text-align:center"><span style="font-size: 20px;">{{user_no_base|length}}</span> Users</span></h5> -->
+                
+            <!-- <h5 style="color:rgb(107, 107, 107);margin:auto 0;text-align:center"><span style="font-size: 20px;">{{registered_children|length}}</span> Children </h5> -->
+
+
+        
+        <!-- <h5 style="color:rgb(107, 107, 107);margin:auto 0;text-align:center"><span style="font-size: 20px;"></span> Children </h5> -->
+        <br>
+        <div style="display: flex;gap:5px;background-color:;">
+            <div style="width: 100%;background-color: ;overflow:auto">
+                <h3 style="color:#641e1e">Registered Children ({{registered_children|length}})</h3>
+                <table id="children" class="tftable" border="1">
+                    <tr><th>Date</th><th>Name</th><th>Group</th><th>Structure</th><th>Parent</th><th>Proof</th><th>Local Church</th><th>Circuit</th><th>Region</th></tr>
+                    {% for child in registered_children %}
+                    {% set parent_info = users.query.get(child.parent_id)%}
+                    {% set parent_pop_trans = pop_transactions.query.filter_by(usr_id=child.parent_id).first() %}
+                    {% if child.name %}
+                        <tr><td>{{child.timestamp}}</td><td>{{child.name}}</td><td>{{child.age_group}}</td><td>{{child.denom_structure}}</td><td>{{parent_info.name}}</td>
+                            {% if parent_pop_trans.pop_image %}<td>Yes</td>{% else %}<td>No</td>{% endif %}<td>{{parent_info.church_local}}</td><td>{{parent_info.church_circuit}}</td>
+                            <td>{{parent_info.church_region}}</td></tr>
+                    {% endif %}
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+
+    </div> 
+    {% endif %}     
+        
+</div>
+<script>
+    function openZones(){
+        console.logs("Table Row Clicked");
+    }
+</script>
+{% endblock %}

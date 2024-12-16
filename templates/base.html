@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='/css/styles.css')}}" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <title>{{title}}</title>
+
+ 
+    {% if current_user.is_authenticated  and current_user.role == "admin_user" %}
+   <!-- <nav class="nav">
+       <ul>
+           <li class="links-li" ><a href="/">Home</a></li>
+           <li class="links-li" ><a href="/registered_users">Registered</a></li>
+           <li class="links-li"><a href="#">Close Event</a></li>
+       </ul>
+   </nav> -->
+   {% endif %}
+
+    <div style="background-color:;margin-top:30px;align-items:center;"  class="user-label">
+      {% if current_user.is_authenticated %}
+          <li><span style="font-size:13px" class="">Welcome, {{current_user.name}}</span></li>
+          {% if current_user.role == "admin_user" %}
+            <li><a class="btns-user links-user" href="/admin_account">Account</a></li>
+          {% else %}
+            <li><a class="btns-user links-user" href="/user_account">Account</a></li>
+          {% endif %}
+          <li><a class="btns-outlined links-user" href="/logout">Logout</a></li>
+      {% endif %}
+    </div>
+
+    <div>
+      <div class="church-logo"><img style="height:inherit" src="{{ url_for('static', filename='images/fea_logo.JPG') }}" /></div>
+      <h1 id="abbr-style" style="margin:10px auto;font-weight:800" >FEA R.U.M.S</h1>
+      <h3 style="margin-top:0px;color:rgb(65, 66, 66)" > FEA eReg & User Management System </h3>
+    </div>
+
+
+    <div class="navigation">
+        <div style=""  onclick="sideNavFunc(event)" class="menu-icon">
+            <div class="stroke"></div>
+            <div class="stroke"></div>
+            <div class="stroke"></div>
+        </div>
+
+        <div class="other-nav">
+            <ul class="other-navbar-nav">
+              <li class="other-nav-item active">
+                <a class="nav-link" href="/">Home</a>
+              </li>
+              <div class="navbar-separator"></div>
+              <li class="other-nav-item">
+                <a class="nav-link" href="/#services">About</a>
+              </li>
+              <div class="navbar-separator"></div>
+              <li class="other-nav-item">
+                <a class="nav-link" href="/freelance_job_ads">Contact Us</a>
+              </li>
+              <div class="navbar-separator"></div>
+              <li class="other-nav-item">
+                <a class="nav-link" href="/about">Explore Apps</a>
+              </li>
+              <div class="navbar-separator"></div>
+              <li class="other-nav-item">
+                <a class="nav-link" href="/contact" ></a>
+              </li>
+            </ul>
+        </div>
+        <div style="background-color:;" class="user">
+              <div><img style="" class="icon-imgs" src="{{ url_for('static', filename='icons/facebook-icon.png') }}" /></div>
+        </div>
+  </div>
+
+
+    <div onclick="closeSideNavFunc()"  id="side-navig-bg" class="side-nav-bg ">
+      <div id="side-navig-cont" class="side-nav-cont move-to-appear gen-flex-col">
+          <!-- <div class="close-btn"><div class="stroke"></div></div> -->
+          <div class="general-flex"><img style="height:30px" src="static/icons/home.png" /><h3 style="color:white;text-align: left;">Menu</h3></div>
+          <div style="display: flex;flex-wrap: wrap;height:100vh;position:relative">
+            <div class="sidenav-list">
+                <li class="other-nav-item">
+                  <a class="nav-link" href="/">Home</a>
+                </li>
+                <li class="other-nav-item">
+                  <a class="nav-link" href="/signup">Register</a>
+                </li>
+                <li class="other-nav-item">
+                {% if current_user.role == "admin_user" %}
+                  <a class="nav-link" href="/admin_account">My Account</a>
+                {% else %}
+                  <a class="nav-link" href="/user_account">My Account</a>
+                {% endif %}
+                </li>
+                <li class="other-nav-item">
+                  <a class="nav-link" onclick="window.location='/local_members'" >Local Members</a>
+                </li>
+                <li class="other-nav-item">
+                  <a class="nav-link" href="/loc_commitee_memberships" >My Church Committees</a>
+                </li>
+                <li class="other-nav-item">
+                  <a class="nav-link" href="/mission_commitee_memberships" >Mission Committees</a>
+                </li>
+                <li class="other-nav-item">
+                  <a class="nav-link" href="/fea_calender" >FEA Calender</a>
+                </li>
+                <!-- <li class="other-nav-item">
+                  <a class="nav-link" href="/about" >My Committee(s)</a>
+                </li> -->
+            </div>
+
+            <div style="align-self:;" id="float-nav" class="sidenav-list">
+              <h3 style="color:white">Registration Updates</h3>
+              <li class="other-nav-item">
+                <a class="nav-link" href="/registered_users">All Registrations</a>
+              </li>
+              <li class="other-nav-item">
+                <a class="nav-link" href="/my_mission_registrations">My Mission Station</a>
+              </li>
+              <li class="other-nav-item">
+                <a class="nav-link" href="/my_zone_registrations">My Zone</a>
+              </li>
+              <li class="other-nav-item">
+                <a class="nav-link" href="/registered_local">My Local Church</a>
+              </li><br>
+              <li class="other-nav-item">
+                <a class="nav-link btns-outlined whiten" href="/admin_signup">Admin Signup</a>
+              </li>
+              <!-- <li class="other-nav-item">
+                <a class="nav-link" href="/edit_app">My Account</a>
+              </li>
+              <li class="other-nav-item">
+                <a class="nav-link" href="/about" >Local Members</a>
+              </li>
+              <li class="other-nav-item">
+                <a class="nav-link" href="/about" >My Church Committees</a>
+              </li>
+              <li class="other-nav-item">
+                <a class="nav-link" href="/about" >My Committee Memberships</a>
+              </li> -->
+              <!-- <li class="other-nav-item">
+                <a class="nav-link" href="/about" >My Committee(s)</a>
+              </li> -->
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+
+    <div onclick="closeSideNavFunc()"  id="side-navig-bg" class="side-nav-bg ">
+      <div id="side-navig-cont" class="side-nav-cont move-to-appear gen-flex-col">
+          <!-- <div class="close-btn"><div class="stroke"></div></div> -->
+          <div class="general-flex"><img style="height:30px" src="static/icons/home.png" /><h3 style="color:white;text-align: left;">Menu</h3></div>
+          <div class="sidenav-list">
+              <li class="other-nav-item">
+                <a class="nav-link" href="/">Registrations</a>
+              </li>
+              <li class="other-nav-item">
+                <a class="nav-link" href="/app_form">Local Perfomance</a>
+              </li>
+              <!-- <li class="other-nav-item">
+                <a class="nav-link" href="/edit_app">My Account</a>
+              </li>
+              <li class="other-nav-item">
+                <a class="nav-link" href="/about" >Local Members</a>
+              </li>
+              <li class="other-nav-item">
+                <a class="nav-link" href="/about" >My Church Committees</a>
+              </li>
+              <li class="other-nav-item">
+                <a class="nav-link" href="/about" >My Committee Memberships</a>
+              </li> -->
+              <!-- <li class="other-nav-item">
+                <a class="nav-link" href="/about" >My Committee(s)</a>
+              </li> -->
+          </div>
+      </div>
+    </div>
+
+
+</head>
+
+<body>
+    <div class="">
+       
+
+        {% if event_details %} 
+          <!-- <div class="general-flex" style="margin:10px auto;"><a href="/user_registration_form"> <button style="" class="btns-outlined links-user">Register / Reserve</button></a></div> -->
+        {% endif %}
+        {% if current_user.is_authenticated and pop_transts.query.filter_by(usr_id=current_user.id).first() %}
+          <!-- <div class="general-flex" style="margin:10px auto;"><a href="/already_registered"> <button style="" class="btns-outlined links-user">View My Card</button></a></div> -->
+        {% endif %}
+        {% block content %}
+        {% endblock %}
+    </div><br><br>
+    <div style="flex-direction: column;" class="physical_addr">
+      <div style="flex-direction: column;" class="general-flex">
+        <small>Having issues? Report them here for a quick response!</small>
+         <a href="/contact_form"> <div style="font-weight:500px" class="btns">Report Issues</div></a>
+      </div><br>
+    </div><br>
+    <div class="physical_addr">
+      <label>powered by: Tech Xolutions(TechX)</label><br>
+      <label>info@techxololutions.com</label>
+    </div>
+
+    <script src="static/js_script.js" ></script>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+</body>
+</html>

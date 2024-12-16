@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+    .form-fields{
+        display:flex;
+        flex-direction:column;
+    }
+    section{ background-image:url(static/images/bg_service.png) }
+</style>
+<div class="flash-messages" id="">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for  category, message in messages %}
+                <div class="flash-messages alert-{{category}}"> {{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+</div>
+<br><br><br>
+
+
+<div style="border:1px solid coral;border-radius: 15px;padding:25px 10px;max-width:fit-content;margin:0 auto" class="">
+   <div class="registered-users-cont">
+        <div class="registered-user">
+            <div class="user-info">
+                <!-- <div style="height:200px;width:200px" class="general-flex">
+                    <img style="height:inherit" class="prf-image" src="static/icons/tick-icon.png" alt="" />
+                </div> -->
+                <div style="height: ;margin:0 auto" class="img-cont">
+                    <div style=""><img class="prf-image"  src="static/images/{{user.image}}" alt=""/></div>
+                </div>
+                <div class="session-title">
+                    <h3 >Registration Card</h3>
+                    <h4 style="margin-bottom: 0;color:coral;">{{user.name}}</h4>
+                </div><br><br>
+                <a href="{{url_for('add_children_form')}}"><div style="font-size:13px;width:max-content;margin:5px auto" class="btns">Add Child</div></a><br><br>
+                
+                
+                <h4 style="margin-bottom: 0;color:rgb(82, 82, 82);text-align: left;">{{event_details.event_title}}</h4><br>
+                <div class="icons-cont"><img class="icons" src='static/icons/email-icon.png' /><small class="">{{user.email}}</small></div>
+                <div class="icons-cont"><img class="icons" src='static/icons/church-icon.png' /><small class="">{{user.church_local}}, {{user.church_zone}}, {{user.church_mission}}</small></div>
+                <small class="">Date:</small>
+                <small class="">{{event_details.start_date}} - {{event_details.end_date}}</small><br>
+                <small class="">Token:</small>
+                <small class="">{{reg_info.query.filter_by(usr_id=user.id).first().transaction_token}}</small><br><br>
+                <div style="height:50px;width:50px;flex-direction: row !important;" class="general-flex">
+                    <img style="height:inherit" class="prf-image" src="static/icons/tick-icon.png" alt="" /> 
+                </div>
+                <br>
+                {% if children %}
+                <h5 style="text-align: left;">Children</h5>
+                <div style="justify-content: flex-start;flex-wrap: wrap;flex-direction:row;" class="general-flex">
+                {% for child in children %}
+                    {% if child.name %}
+                        <div style="font-size:13px;width:max-content;" class="btns">{{child.name}}</div>
+                    {% endif %}
+                {% endfor %}
+                </div><br>
+                {% endif %}
+                <!-- <img style="height:50px" class="" src="{{ url_for('static', filename='images/aec_logo.JPG') }}" /><br> -->
+                <small style="color:coral;font-weight:600" class="">Please Note: Full Details of Registration are sent to your registered email</small><br>
+            </div>
+        </div>
+    </div>
+</div><br><br>
+
+<script>
+</script>
+{% endblock %}

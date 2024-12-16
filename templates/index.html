@@ -1,0 +1,173 @@
+{% extends "base.html" %}
+{% block content %}
+
+    <style>
+        .form-fields{
+            display:flex;
+            flex-direction:column;
+        }
+        section{ background-image:url(static/images/bg_service.png) }
+    </style>
+    <div class="flash-messages" id=""></div>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for  category, message in messages %}
+                    <div class="flash-messages alert-{{category}}"> {{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+</div>
+<br><br>
+<div style="flex-direction: column;justify-content: flex-start;" class="">
+
+    {% if not current_user.is_authenticated %}
+    <div class="block gen-flex-col">
+        <h5 id="sign-cap">Sign up for FEA memebership, with local church details</h5>
+        <div style="background-color:;align-items:center;"  class="user-label">
+            <li><a class="btns-scolor links-user" href="/login">Login</a></li>
+            <li><a class="btns-user links-user" href="/google_signup">Signup</a></li>
+        </div>
+    </div>{% endif %}<br><br>
+    {% if event_details %}
+    <h2>Register for Upcoming Mission Event</h2>
+    <div id="narrow-screen" class="block-event">
+        <!-- absolute to parent -->
+        <div id="left-pan-phone" class="block-left-pan">
+            <h1 class="event-title-mob" style="margin-bottom:0;color:rgb(255, 255, 255)">{{event_details.event_title}} <br>
+                <span style="font-size:medium;font-weight:500 ;">(Manzini Mission)</span></h1>
+            <img class="event-img-bg" src="static/images/fea-sample.jpg" /> 
+        </div>
+        <!-- absolute to parent -->
+        <div  class="block-left-pan">
+            <div id="hide-title" style="z-index:1000;" class="title-cont gen-flex-col"><h1 style="margin-bottom:0;color:white">{{event_details.event_title}}</h1><h3 style="margin-top:0;color:white">
+                {{event_details.start_date.strftime("%d")}} - {{event_details.end_date.strftime("%d %b %y")}}</h3>
+                <div class="flex-grower" ></div>
+                <a href="{{url_for('user_registration_form')}}" ><div style="margin-bottom: 15px;" class="btns">Register</div></a>
+            </div> 
+        </div>
+        
+        <div style="" class="block-right-pan gen-flex-col">
+            <div  style="z-index:1000;display: none;" class="title-cont gen-flex-col"><h1 style="margin-bottom:0;color:white">{{event_details.event_title}}</h1><h3 style="" id="date-tl-mob">
+                {{event_details.start_date.strftime("%d")}} - {{event_details.end_date.strftime("%d %b %y")}}</h3>
+            </div> 
+            <div class="gen-flex-col event-details"><img src="static/icons/location-icon.png"/><h4>{{event_details.event_venue}}</h4></div><br>
+            <div class="gen-flex-col event-details"><img src="static/icons/registration-icon.png"/><h4>Registrations</h4>
+                <h5><span>{{event_details.registration_group1}}</span> | <span>{{event_details.reg_fee_amnt1}}</span></h5>
+                <h5><span>{{event_details.registration_group2}}</span> | <span>{{event_details.reg_fee_amnt2}}</span></h5>
+                <h5><span>{{event_details.registration_group3}}</span> | <span>{{event_details.reg_fee_amnt3}}</span></h5>
+            </div><br>
+            <a href="{{url_for('user_registration_form')}}" ><div id="btn-reg" style="margin-bottom: 15px; display: none;" class="btns">Register</div></a>
+        </div>
+    </div><br><br>
+    {% endif %}
+
+    <h5>Other Upcoming Mission Events</h5>
+    <div id="upcom-card" style="height:300px;box-shadow: none;" class="block-event">
+
+        <div  class="block-left-pan gen-flex-col  other_events_l">
+            <div style="z-index:1000;" class="title-cont gen-flex-col"><h1 style="margin-bottom:0;color:white">Fathers Convention</h1><h3 style="margin-top:0;color:white">30 - 11 March 2025</h3>
+                <!-- <div class="flex-grower" ></div> -->
+            </div> 
+        </div>
+        
+        <div style="" class="block-right-pan gen-flex-col other_events_r">
+            <div class="gen-flex-col event-details"><img src="static/icons/location-icon.png"/><span class="ads-tag-4">Zakhele FEA Auditorium(Old)</span></div>
+            <div class="gen-flex-col event-details"><img src="static/icons/registration-icon.png"/><span class="ads-tag-4">23 - 24 Aug 2024</span>
+                <div style="margin-bottom: 15px;" class="btns">Register</div>
+            </div>
+        </div><br>
+
+    </div><br>
+
+
+    <!-- <div class="cont-for-scroll" >
+        <button class="scroll-btn" id="scroll-left" style="position: absolute; top: 150px; left: 30px; transform: translateX(-50%);"></button>
+        <div class="engraving-ideas" style="">
+            <div style="gap:20px" class="no-width general-flex">
+                <div style="height:300px;box-shadow: none;" class="block-event">
+
+                    <div  class="block-left-pan gen-flex-col  other_events_l">
+                        <div style="z-index:1000;" class="title-cont gen-flex-col"><h1 style="margin-bottom:0;color:white">Fathers Convention</h1><h3 style="margin-top:0;color:white">30 - 11 March 2025</h3>
+                           
+                        </div> 
+                    </div>
+                    
+                    <div style="" class="block-right-pan gen-flex-col other_events_r">
+                        <div class="gen-flex-col event-details"><img src="static/icons/location-icon.png"/><span class="ads-tag-4">Zakhele FEA Auditorium(Old)</span></div>
+                        <div class="gen-flex-col event-details"><img src="static/icons/registration-icon.png"/><span class="ads-tag-4">23 - 24 Aug 2024</span>
+                            <div style="margin-bottom: 15px;" class="btns">Register</div>
+                        </div>
+                    </div>
+
+                </div> -->
+
+                <!-- <div style="height:300px;box-shadow: none;" class="block-event">
+
+                    <div  class="block-left-pan gen-flex-col  other_events_l">
+                        <div style="z-index:1000;" class="title-cont gen-flex-col"><h1 style="margin-bottom:0;color:white">Fathers Convention</h1><h3 style="margin-top:0;color:white">30 - 11 March 2025</h3>
+                        </div> 
+                    </div>
+                    
+                    <div style="" class="block-right-pan gen-flex-col other_events_r">
+                        <div class="gen-flex-col event_details"><img src="static/icons/location-icon.png"/><span class="ads-tag-4">Zakhele FEA Auditorium(Old)</span></div>
+                        <div class="gen-flex-col event_details"><img src="static/icons/registration-icon.png"/><span class="ads-tag-4">23 - 24 Aug 2024</span>
+                            <div style="margin-bottom: 15px;" class="btns">Register</div>
+                        </div>
+                    </div>
+
+                </div> -->
+            <!-- </div>
+        </div>
+        <button class="scroll-btn" id="scroll-right" style="position: absolute; top: 150px; right:10px; transform: translateX(-50%);"></button>
+    </div> -->
+
+    <a href="/fea_calender"><div style="margin:20px auto;" class="btns-outlined">FEA Calendar</div></a>
+
+</div><br><div style="height:100px"></div>
+
+<script>
+// document.querySelector('.no-width').addEventListener('click',function(){console.log("I am scrolled");});
+document.getElementById('scroll-left').addEventListener('click', function() {
+    const container = document.querySelector('.no-width');
+    const thumb = document.querySelector('.engraving-ideas::-webkit-scrollbar-thumb');
+    // const firstImg = document.querySelector('img');
+    // if (!firstImg) return;
+    // const imageWidth = firstImg.clientWidth;
+    
+    if (window.innerWidth >= 600){
+        container.scrollBy({
+            left: -600, // Adjust this value to match the height of visible area
+            behavior: 'smooth'
+        });
+    }else{
+        container.scrollBy({
+            left: -imageWidth, // Adjust this value to match the height of visible area
+            behavior: 'smooth'
+        });
+    }
+});
+
+document.getElementById('scroll-right').addEventListener('click', function() {
+    console.log("Testing r");
+    const container = document.querySelector('.no-width');
+    // const imgContainer = document.querySelector('.no-width');
+    // const firstImg = document.querySelector('.block-event');
+    // if (!firstImg) return;
+    // const imageWidth = firstImg.clientWidth;
+    
+    if (window.innerWidth >= 600){
+        container.scrollBy({
+            left: 600, // Adjust this value to match the height of visible area
+            behavior: 'smooth'
+        });
+    }else{
+        container.scrollBy({
+            left: imageWidth, // Adjust this value to match the height of visible area
+            behavior: 'smooth'
+        });
+    }
+});
+
+    
+</script>
+{% endblock %}

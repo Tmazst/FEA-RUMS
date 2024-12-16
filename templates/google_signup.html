@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+    .form-fields{
+        display:flex;
+        flex-direction:column;
+    }
+    section{ background-image:url(static/images/bg_service.png) }
+</style>
+<div class="flash-messages" id="">
+  {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+          {% for  category, message in messages %}
+              <div class="flash-messages alert-{{category}}"> {{ message }}</div>
+          {% endfor %}
+      {% endif %}
+  {% endwith %}
+</div>
+<br><br>
+
+<div class="container">
+   
+  <div class="login-cont flex-general">
+    
+      <form style="background-color:;flex-direction:column;z-index:1000;" class="" _lpchecked="1" action="" method="post">
+        <div class="flex-general" style="flex-direction: column;align-items: flex-start;">
+            <h2 class="form-welcome" style="">Membership Signup<br><span style="font-size:medium;color:rgb(102, 102, 102);"></span></h2>
+        </div><br>
+        <div>
+            <a href="{{url_for('google_login')}}"><div style="gap:2px;justify-content: flex-start;" class="general-flex" ><h4 style="margin:0">Continue with </h4>
+            <img class="ggl-img" style="height: 35px;border-radius: 15px;" src="static/icons/google.jpg" /> </div></a>
+        </div><br><br>
+        <small style="margin:0">You can also,</small>
+        <div style="" class="group">
+            <a href="{{url_for('sign_up')}}"><div style="width:200px" class="btns-outlined whiten general-flex">Sign Up Manually</div></a><br>
+                <!--<input class="btns" type="submit" value="Create Account" />-->
+        </div>
+        <div style="" class="group">
+            <!-- <div><a class="slinks-li" href="/register">Forgot Password?</a></div> -->
+        </div>
+
+      </form>
+  </div>
+</div>
+
+<script>
+    //Password Checker
+    let password = document.getElementById("password");
+    let power = document.getElementById("power-point");
+    confirm_password = document.getElementById("confirm_password");
+    
+    if (password && power) {
+        password.oninput = function () {
+            let point = 0;
+            let value = password.value;
+            let widthPower =
+                ["1%", "25%", "50%", "75%", "100%"];
+            let colorPower =
+                ["#D73F40", "#DC6551", "#F2B84F", "#BDE952", "#3ba62f"];
+    
+            if (value.length >= 6) {
+                let arrayTest =
+                    [/[0-9]/, /[a-z]/, /[A-Z]/, /[^0-9a-zA-Z]/];
+                arrayTest.forEach((item) => {
+                    if (item.test(value)) {
+                        point += 1;
+                    }
+                });
+            }
+            power.style.width = widthPower[point];
+            power.style.backgroundColor = colorPower[point];
+        };
+    }
+</script>
+{% endblock %}
