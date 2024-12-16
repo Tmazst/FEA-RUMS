@@ -240,6 +240,7 @@ tr:hover{
     border:1px solid var(--main-color);
     max-width: 500px;
     margin:10px auto;
+    padding:15px;
 }
 
 .group label{
