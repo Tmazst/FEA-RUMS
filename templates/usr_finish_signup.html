@@ -1,0 +1,120 @@
+
+{% extends "base.html" %}
+{% block content %}
+
+    <style>
+        .form-fields{
+            display:flex;
+            flex-direction:column;
+        }
+        section{ background-image:url(static/images/bg_service.png) }
+    </style>
+
+<div class="flash-messages" id="">
+  {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+          {% for  category, message in messages %}
+              <div class="flash-messages alert-{{category}}"> {{ message }}</div>
+          {% endfor %}
+      {% endif %}
+  {% endwith %}
+</div>
+
+    <br><br>
+<div class="user-info">
+    <div style="" class="img-cont">
+        <div width="90%"><img class="prf-image" src="static/images/default.jpg" alt=""/></div>
+    </div><br>
+    <h4 style="margin-bottom: 0;text-align: left;">{{user.name}}</h4>
+    <div class="icons-cont"><img class="icons" src='static/icons/email-icon.png' /><small class="">{{user.email}}</small></div>
+    <div class="icons-cont"><img class="icons" src='static/icons/church-icon.png' />{% if user.church_local %}<small class="">{{user.church_local}},</small></div>
+    <small style="float: left" class="">{{user.church_zone}},</small>
+    <small class="">{{user.church_mission}}</small>{% else %}<a href="#">Finish Sign-up</a>{% endif %} <br>
+</div>
+<br><br>
+
+<div class="container finish-sign">
+   
+  <div id="" class=" flex-general ">
+    
+      <form style="background-color:;flex-direction:column;z-index:1000;" class="" _lpchecked="1" action="" method="post" enctype="multipart/form-data">
+        <h1>Please Finish,<br><span style="font-size:medium;color:rgb(102, 102, 102)">You're almost Done!👍</span></h1>
+            {{finish_register.hidden_tag()}}
+            <!-- Contacts  -->
+            <div class="group">
+                {{ finish_register.contacts.label }}<br>
+                {{ finish_register.contacts(class="form-control finish-sign-fmcontrl",placeholder="contacts") }}<br>
+                {% if finish_register.contacts.errors %}
+                  {% for error in finish_register.contacts.errors %}<span class="span-error" >*{{error}}</span>{% endfor %}
+               {% endif %}
+          </div>
+          <!-- Address  -->
+          <div class="group">
+            {{ finish_register.address.label }}<br>
+            {{ finish_register.address(class="form-control finish-sign-fmcontrl",placeholder="address") }}<br>
+            {% if finish_register.address.errors %}
+              {% for error in finish_register.address.errors %}<span class="span-error" >*{{error}}</span>{% endfor %}
+           {% endif %}
+          </div>
+          <!-- Gender  -->
+          <div class="group">
+            {{ finish_register.gender.label }}<br>
+            {{ finish_register.gender(class="form-control finish-sign-fmcontrl",placeholder="gender") }}<br>
+            {% if finish_register.gender.errors %}
+              {% for error in finish_register.gender.errors %}<span class="span-error" >*{{error}}</span>{% endfor %}
+           {% endif %}
+          </div>
+          <!-- Age Group  -->
+          <div class="group">
+            {{ finish_register.age_group.label }}<br>
+            {{ finish_register.age_group(class="form-control finish-sign-fmcontrl",placeholder="Youth") }}<br>
+            {% if finish_register.age_group.errors %}
+              {% for error in finish_register.age_group.errors %}<span class="span-error" >*{{error}}</span>{% endfor %}
+           {% endif %}
+          </div>
+
+          <!-- Church Local  -->
+          <div class="group">
+                  {{ finish_register.church_local.label }}<br>
+                  {{ finish_register.church_local(class="form-control finish-sign-fmcontrl",placeholder="Church local") }}<br>
+                  {% if finish_register.church_local.errors %}
+                  {% for error in finish_register.church_local.errors %}<span class="span-error" >*{{error}}</span>{% endfor %}
+                  {% endif %}
+          </div>
+          <!-- Church Zone  -->
+          <div class="group">
+                  {{ finish_register.church_zone.label }}<br>
+                  {{ finish_register.church_zone(class="form-control finish-sign-fmcontrl",placeholder="church zone")}}<br>
+                  {% if finish_register.church_zone.errors %}
+                  {% for error in finish_register.church_zone.errors %}<span class="span-error" >*church_zone {{error}}</span>
+                  {% endfor %}
+                  {% endif %}
+          </div>
+          <!-- Church Mission  -->
+          <div class="group">
+              {{ finish_register.church_mission.label }}<br>
+              {{ finish_register.church_mission(class="form-control finish-sign-fmcontrl",placeholder="church mission")}}<br>
+              {% if finish_register.church_mission.errors %}
+                  {% for error in finish_register.church_mission.errors %}<span class="span-error" >*{{error}}</span>
+                  {% endfor %}
+              {% endif %}
+          </div>
+
+
+          <div style="" class="group">
+                  <div>{{ finish_register.submit(class="btns") }}</div><br>
+                  <!--<input class="btns" type="submit" value="Create Account" />-->
+                  <!-- <div><a class="slinks-li" href="/login">Login</a></div> -->
+          </div>
+          <div style="" class="group">
+              <!-- <div><a class="slinks-li" href="/register">Forgot Password?</a></div> -->
+          </div>
+
+      </form>
+  </div>
+</div>
+
+<script>
+    
+</script>
+{% endblock %}
