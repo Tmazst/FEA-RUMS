@@ -232,6 +232,7 @@ def open_event_form():
 
     return render_template('open_event.html',open_reg_form=open_reg_form)
 
+
 #Admins Opening & Closing Registrations
 @app.route("/opened_event_edit", methods=["POST", "GET"])
 def opened_event_edit():
@@ -381,6 +382,7 @@ def add_children_form():
 
     return render_template('add_children_form.html', add_child_form=add_child_form)
 
+
 #User Registrations Form Edit Confirm
 @app.route("/registration_form_edit_confirm", methods=["POST", "GET"])
 @login_required
@@ -418,6 +420,7 @@ def Get_Registration_Amount(val):
     amount = event_dict.get("reg_fee_amnt" + key[-1])
 
     return amount
+
 
 @app.route("/view_member", methods=["POST", "GET"])
 @login_required
@@ -484,6 +487,8 @@ def mission_committee_members():
     return render_template("mission_committees.html",admins=admins,committees=committees,admin_obj=admin_user)
 
 
+
+
 #User Registrations Form
 @app.route("/user_registration_form", methods=["POST", "GET"])
 @login_required
@@ -515,6 +520,7 @@ def user_registration_form():
             return redirect(url_for("admin_finish_signup"))
     
     if registration_form.validate_on_submit():
+
         reg =registration_form.registration.data + " " + str(Get_Registration_Amount(registration_form.registration.data))
         registration = pop_transactions(
             usr_id=current_user.id,transaction_id=secrets.token_hex(16),transaction_token=secrets.token_hex(16)+str(current_user.id),
@@ -535,6 +541,7 @@ def user_registration_form():
         return redirect(url_for("registration_success"))
 
     return render_template('registrations_form.html',registration_form=registration_form,user=get_user,event_details=event,val_registration=val_registration)
+
 
 #User Registrations Form Edit
 @app.route("/user_registration_form_edit", methods=["POST", "GET"])
@@ -670,6 +677,7 @@ def registered_users():
 
     return render_template('registered_users.html',users=User,reg_details=registered_users,registered_children=registered_children,pop_transactions=pop_transactions,
                            missions=missions,needed=None)
+
 
 # User Registrations
 @app.route("/my_mission_registrations", methods=["POST", "GET"])
@@ -920,6 +928,15 @@ def admin_signup():
     return render_template("manual_signup.html",register=register)
 
 
+def update_zone(registration_form):
+    zone = registration_form.church_zone.data
+    
+    # Check if 'zone' is part of the input data
+    if 'zone' not in zone.split():
+        zone += ' zone'  # Append 'zone' with a space if it is not present
+
+    return zone
+
 @app.route("/usr_finish_signup", methods=["POST","GET"])
 @login_required
 def usr_finish_signup():
@@ -937,7 +954,7 @@ def usr_finish_signup():
 
             user.contacts=finish_register.contacts.data
             user.address=finish_register.address.data
-            user.church_local=finish_register.church_local.data
+            user.church_local=update_zone(finish_register)
             user.church_zone=finish_register.church_zone.data
             user.church_mission=finish_register.church_mission.data
             user.age_group=finish_register.age_group.data
