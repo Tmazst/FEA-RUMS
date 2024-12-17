@@ -91,8 +91,9 @@
                 <li class="other-nav-item">
                 {% if current_user.role == "admin_user" %}
                   <a class="nav-link" href="/admin_account">My Account</a>
-                {% if current_user.role == "church_user" %}
+                {% elif current_user.role == "church_user" %}
                   <a class="nav-link" href="/user_account">My Account</a>
+                
                 {% endif %}
                 </li>
                 <li class="other-nav-item">
