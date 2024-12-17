@@ -1,0 +1,182 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+    .form-fields{
+        display:flex;
+        flex-direction:column;
+    }
+    section{ background-image:url(static/images/bg_service.png) }
+    /* .sub-topic{background-color: rgb(0, 60, 255) !important; } */
+</style>
+<div class="flash-messages" id="">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for  category, message in messages %}
+                <div class="flash-messages alert-{{category}}"> {{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+</div>
+<br><br><br>
+
+<div style="justify-content: flex-start;padding:10px;width:70%;background-color: rgb(237, 238, 238);margin:0 auto;border-radius: 10px;" class="general-flex">
+    <a style="background-color: ;z-index:500" href="/registered_users" ><img style="height:35px" class="icons" src='static/icons/table-icon.png' /></a>
+    <a style="background-color: ;z-index:500" href="/registrations" ><img style="height:35px" class="icons" src='static/icons/list-icon.png' /></a>
+</div>
+<div class="session-title">
+    <h2 style="margin-bottom:0;">{{user.church_local}}</h2>
+    <h2></h2><br>
+    <h2 style="color:coral">  User Management System </h2>
+    <h5 style="color:coral;margin:auto 0;text-align:center"><span style="font-size: 20px;"></span><span style="font-size: 20px;color:black"></span>  
+        <span style="color:rgb(107, 107, 107);margin:auto 0;text-align:center"><span style="font-size: 20px;"></span></span></h5>
+    
+</div><br>
+
+
+<div class="">
+   <div class="registered-users-cont">
+        <div class="registered-user">
+            <div style="flex-direction: column;" class="card">
+                <div class="user-info">
+                    <div style="" class="img-cont">
+                        <div width="90%"><img class="prf-image" src="static/images/{{user.image}}" alt=""/></div>
+                    </div><br>
+                    <h4 style="margin-bottom: 0;text-align: left">{{user.name}}</h4>
+                    <div class="icons-cont"><img class="icons" src='static/icons/email-icon.png' /><small class="">{{user.email}}</small></div>
+                    <small><i>Joined: {{user.timestamp}}</i></small>
+                </div><br>
+                <div class="general-flex" style="padding:15px; align-items: flex-start !important;flex-direction:column">
+                    <h5 class="btns-outlined greyscale-it"> Personal Info</h5>
+                    <small class="labels">Contacts</small>
+                    <small>{{user.contacts}}</small>
+                    <div class="line-sep"></div>
+                    <small class="labels">Pysical Address</small>
+                    <small>{{user.address}}</small>
+                    <div class="line-sep"></div>
+                    <small class="labels">Employment Status</small>
+                    <small>{{user.employ_status}}</small>
+                    <div class="line-sep"></div>
+                    <small class="labels">Next of Kin</small>
+                    <small>{{user.next_of_kin}}</small>
+                    <div class="line-sep"></div>
+                    <small class="labels">Next of Kin Contacts</small>
+                    <small>{{user.next_of_kin_no}}</small>
+                    <div class="line-sep"></div>
+
+                    <h5 class="btns-outlined greyscale-it">Membership Details</h5>
+                    <small class="labels">Local</small>
+                    <div class="icons-cont"><small class="">{{user.church_local}}</small></div>
+                    <div class="line-sep"></div>
+                    <small class="labels">Pastor</small>
+                    <small class="">{{loc_pastor}}</small>
+                    <div class="line-sep"></div>
+                    <small class="labels">Zone</small>
+                    <small class="">{{user.church_zone}}</small>
+                    <div class="line-sep"></div>
+                    <small class="labels">Mission</small>
+                    <small class="">{{user.church_mission}}</small>
+
+                    <h5 class="btns-outlined greyscale-it">Committee Membership Details</h5>
+                    {% if user.role == "admin_user" %}
+                    <small style="color:rgb(54, 54, 54)" class="labels">1. Local Committee Membership:</small>
+                    <div style="padding:10px">
+                        <small class="labels">Committee Group</small>
+                        <div class="icons-cont"><small class="">{{user.committee_local_group}}</small></div>
+                        <br><div class="line-sep"></div><br>
+                        <small class="labels">Committee Membership</small>
+                        <div class="icons-cont"><small class="">{{user.committee_local_pos}}</small></div>
+                    </div>
+                    <small style="color:rgb(54, 54, 54)" class="labels">2. Mission Committee Membership:</small>
+                    <div style="padding:10px">
+                        <small class="labels">Committee Group</small>
+                        <div class="icons-cont"><small class="">{{user.committee_mission_grp}}</small></div>
+                        <br><div class="line-sep"></div><br>
+                        <small class="labels">Committee Membership</small>
+                        <div class="icons-cont"><small class="">{{user.committee_mission_pos}}</small></div>
+                    </div>
+                    {%  else %}
+                    <small>No Data</small>
+                    {% endif %}
+            </div>
+
+            </div><br><div style="margin:0 auto;width:200px" ><button style="width:200px" onclick="openDetails('{{user.id}}',event)" class="btns">Other Details</button></div><br><br>
+
+            <div id="reg-info-{{user.id}}" style="padding:;background-color:rgb(255, 255, 255)" class="registration-info">
+                <div class="icons-cont sub-topic"><img class="icons" src='static/icons/registration-icon.png' /><div style="" class="sub-topic">Employment Info</div></div>
+                <div class="general-flex" style="padding:10px; align-items: flex-start !important;flex-direction:column">
+                    <small class="labels">Employment Status</small>
+                    <small class="acc_labels">{{user.employ_status}}</small>
+                    <div class="line-sep"></div>
+                    <small class="labels">Employer</small>
+                        {% if user.employ_status == "Un-employed"%}
+                            <small class="acc_labels">{{user.employ_status}}</small>
+                            <div class="line-sep"></div>
+                            {% elif user.employ_status == "Working"%}
+                            <small class="acc_labels">{{user.employer}}</small>
+                            <div class="line-sep"></div>
+                            {% elif user.employ_status == "Entreprenuer"%}
+                            <small class="acc_labels">Entreprenuer / Self-Employed</small>
+                            <div class="line-sep"></div>
+                            {% else %}
+                            <small class="acc_labels">No Data</small>
+                            <div class="line-sep"></div>
+                        {% endif %}
+                    <small class="labels">Work Experience</small>
+                    <small class="acc_labels">{{user.experience}}</small>
+                </div>
+            </div><br>
+
+            <div id="ev-info-{{user.id}}" style="padding:;background-color:rgb(255, 255, 255)" class="registration-info">
+                <div class="icons-cont sub-topic"><img class="icons" src='static/icons/event-icon.png' /><div style="" class="sub-topic">Education & Experience</div></div>
+                <div class="general-flex" style="padding:10px; align-items: flex-start !important;flex-direction:column">
+                    <small class="labels">High School</small>
+                    <small class="acc_labels">No Data</small>
+                    <div class="line-sep"></div>
+                    <small class="labels">Skills</small>
+                    <small class="acc_labels">{{user.skills}}</small>
+                    <div class="line-sep"></div>
+                    <small class="labels">Qualifications</small>
+                    <small class="acc_labels">{{user.qualifications}}</small>
+                </div>
+            </div>
+
+            <!-- Pop-up -->
+            {% if reg_details.query.filter_by(usr_id=user.id).first().pop_image %}
+            <div id="pop_image_{{user.id}}" class="pop-cont">
+                <div id="popup_{{user.id}}" class="pop-up">
+                    {% set pop_img = reg_details.query.filter_by(usr_id=user.id).first().pop_image %}
+                    {% set file_ext = pop_img.split('.')[-1] | lower %}
+                    <!---IMG VIEWER-->
+                    {% if file_ext  in ['jpg','jpeg','png', 'gif'] %}
+                        {% if pop_img %}
+                            <h4>{{pop_img}}</h4>
+                        {% endif %}
+                        <img  src="static/uploads/{{pop_img}}" />
+                    <!---PDF VIEWER-->
+                    {% elif file_ext  == 'pdf' %}
+                    <h4>{{pop_img}}</h4>
+                        <embed src="static/uploads/{{pop_img}}" type="application/pdf" width="100%" height="1000px" />
+                    <!---DOCX VIEWER-->
+                    {% elif file_ext  == 'docx' %}
+                        <iframe src="https://docs.google.com/gview?url={{ url_for('static', filename='uploads/pop_img') }}&embedded=true" width="100%" height="1000px" frameborder="0"></iframe>
+                    {% else %}
+                        <p>Unsupported file format.</p>
+                    {% endif %}
+                    <br>
+                    <div  style="align-self:flex-end;width:60%" ><input onclick="closePopup('{{user.id}}')" class="btns" type="button" value="Exit"></div>
+                </div>
+            </div>
+            {% endif %}
+
+        </div>
+   </div>
+  
+</div>
+
+
+
+<script>
+    
+</script>
+{% endblock %}
