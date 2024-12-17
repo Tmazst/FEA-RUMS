@@ -157,6 +157,7 @@ def compress_image(image_path, target_size_kb):
         # Move the temp file to the original file name or save as a new file
         os.replace(temp_file, image_path)
 
+
 def process_file(file):
     filename = secure_filename(file.filename)
 
@@ -530,7 +531,6 @@ def mission_committee_members():
     admins = admin_user.query.filter_by(church_local=current_user.church_local).all()
 
     return render_template("mission_committees.html",admins=admins,committees=committees,admin_obj=admin_user)
-
 
 
 
@@ -974,11 +974,11 @@ def admin_signup():
 
 
 def update_zone(registration_form):
-    zone = registration_form.church_zone.data
+    zone = registration_form.church_zone.data.title()
     
     # Check if 'zone' is part of the input data
-    if 'zone' not in zone.split():
-        zone += ' zone'  # Append "zone" with a space if it is not present
+    if 'Zone' not in zone.split():
+        zone += ' Zone'  # Append "zone" with a space if it is not present
 
     return zone
 
@@ -999,8 +999,8 @@ def usr_finish_signup():
 
             user.contacts=finish_register.contacts.data
             user.address=finish_register.address.data
-            user.church_local=update_zone(finish_register)
-            user.church_zone=finish_register.church_zone.data
+            user.church_local=finish_register.church_zone.data 
+            user.church_zone=update_zone(finish_register)
             user.church_mission=finish_register.church_mission.data
             user.age_group=finish_register.age_group.data
             user.gender=finish_register.gender.data
