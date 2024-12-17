@@ -933,7 +933,7 @@ def update_zone(registration_form):
     
     # Check if 'zone' is part of the input data
     if 'zone' not in zone.split():
-        zone += ' zone'  # Append 'zone' with a space if it is not present
+        zone += ' zone'  # Append "zone" with a space if it is not present
 
     return zone
 
