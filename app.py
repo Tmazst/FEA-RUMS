@@ -602,6 +602,7 @@ def already_registered():
 def local_members():
 
     local = None
+    loc_pastor = None
 
     registered_children = children.query.all()
     
@@ -613,7 +614,11 @@ def local_members():
     print('Final: ',request.args.get('loc'))
 
     local_users =User.query.filter_by(church_local=local).all()
-    loc_pastor = admin_user.query.filter_by(church_local=current_user.church_local,senior_pastor=True).first().name
+
+    check_loc_pastor = admin_user.query.filter_by(church_local=current_user.church_local,senior_pastor=True).first()
+    if check_loc_pastor:
+        loc_pastor = check_loc_pastor.name
+    
 
 
     return render_template('local_members.html',local_usrs=local_users,registered_children=registered_children,pop_transactions=pop_transactions,
