@@ -1220,7 +1220,7 @@ def verified(token):
         if usr.verified:
             login_user(usr)
             # if not current_user.is_authenticated:
-            #     if not current_user.church_local and not current_user.church_circuit:
+            #     if not current_user.church_local and not current_user.church_zone:
             print("Finish Setup")
             flash(f"Please Finish your Sign-up process", "success")
             return redirect(url_for('finish_signup'))
