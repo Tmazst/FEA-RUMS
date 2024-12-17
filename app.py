@@ -28,8 +28,8 @@ from sqlalchemy import inspect
 app = Flask(__name__)
 app.config['SECRET_KEY'] = "sdsdjfe832j2rj_32j"
 # app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///techxicons_db.db"
-# app.config['SQLALCHEMY_DATABASE_URI'] = "mysql://root:tmazst41@localhost/fea_registration_db"
-app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://techtlnf_tmaz:!Tmazst41#@localhost/techtlnf_fea_db"
+app.config['SQLALCHEMY_DATABASE_URI'] = "mysql://root:tmazst41@localhost/fea_registration_db"
+# app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://techtlnf_tmaz:!Tmazst41#@localhost/techtlnf_fea_db"
 app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {'pool_recycle':280}
 app.config["SQLALCHEMY_POOL_RECYCLE"] = 299
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
@@ -124,7 +124,7 @@ if os.path.exists('client.json'):
     }
 
 
-    oauth.register("Registra",
+    oauth.register("fearegistra",
                 client_id = appConfig.get("OAUTH2_CLIENT_ID"),
                 client_secret = appConfig.get("OAUTH2_CLIENT_SECRET"),
                     api_base_url='https://www.googleapis.com/',
@@ -1400,14 +1400,14 @@ def google_login():
 
     # print("DEBUG CREDITENTAILS: ",appConfig.get("OAUTH2_CLIENT_ID"),' ',appConfig.get("OAUTH2_CLIENT_SECRET"))
 
-    return oauth.Registra.authorize_redirect(redirect_uri=url_for("google_signin",_external=True))
+    return oauth.fearegistra.authorize_redirect(redirect_uri=url_for("google_signin",_external=True))
 
 
 #login redirect
 @app.route("/google_signin", methods=["POST","GET"])
 def google_signin():
 
-    token = oauth.Registra.authorize_access_token()
+    token = oauth.fearegistra.authorize_access_token()
 
     session['user'] = token
 
