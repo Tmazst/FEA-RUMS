@@ -1446,7 +1446,7 @@ def google_signin():
             usr_obj = User.query.filter_by(email=usr_email).first()
             login_user(usr_obj)
 
-            if not current_user.church_local and not current_user.church_circuit:
+            if not current_user.church_local and not current_user.church_zone:
 
                 # flash(f"Welcome! {usr_obj.name.title()}, Please Finish Part II of your Sign-up Process", "success")
                 return redirect(url_for('finish_signup'))
@@ -1465,7 +1465,7 @@ def google_signin():
         req_page = request.args.get('next')
         flash(f"Hello! {usr_obj.name.title()} You're Logged In!", "success")
 
-        if not current_user.church_local and not current_user.church_circuit:
+        if not current_user.church_local and not current_user.church_zone:
             print("Finish Setup")
             flash(f"Please Finish your Sign-up process", "success")
             return redirect(url_for('finish_signup'))
