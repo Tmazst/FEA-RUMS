@@ -18,6 +18,7 @@ from sqlalchemy.exc import IntegrityError
 from authlib.integrations.flask_client import OAuth
 import json
 from sqlalchemy import inspect
+from PIL import Image
 # import logging
 
 
@@ -135,21 +136,65 @@ if os.path.exists('client.json'):
                 )
 
 
+def compress_image(image_path, target_size_kb):
+    # Open an image file
+    with Image.open(image_path) as img:
+        # Calculate quality based on the target size
+        quality = 85  # Starting quality
+        while True:
+            # Save to a temporary file to check the size
+            temp_file = image_path.replace(os.path.splitext(image_path)[1], "_temp.jpg")
+            img.save(temp_file, format='JPEG', quality=quality)
+
+            # Check size
+            if os.path.getsize(temp_file) <= target_size_kb * 1024:  # Convert KB to bytes
+                break
+            quality -= 5  # Decrease quality to reduce file size
+
+            if quality < 10:  # Minimum quality threshold
+                break
+
+        # Move the temp file to the original file name or save as a new file
+        os.replace(temp_file, image_path)
+
 def process_file(file):
+    filename = secure_filename(file.filename)
 
-        filename = secure_filename(file.filename)
+    _img_name, _ext = os.path.splitext(filename)
+    gen_random = secrets.token_hex(8)
+    new_file_name = gen_random + _ext
 
-        _img_name, _ext = os.path.splitext(filename)
-        gen_random = secrets.token_hex(8)
-        new_file_name = gen_random + _ext
+    if file.filename == '':
+        return 'No selected file'
 
-        if file.filename == '':
-            return 'No selected file'
+    print("DEBUG FILE NAME: ", file.filename)
+    file_path = os.path.join("static/images", new_file_name)
+    
+    # Save the file first
+    file.save(file_path)
+    
+    # Compress the image to ~90KB
+    compress_image(file_path, target_size_kb=90)
 
-        print("DEBUG FILE NAME: ", file.filename)
-        file_saved = file.save(os.path.join("static/images",new_file_name))
-        flash(f"File Upload Successful!!", "success")
-        return new_file_name
+    flash("File Upload Successful!!", "success")
+    return new_file_name
+
+
+# def process_file(file):
+
+#         filename = secure_filename(file.filename)
+
+#         _img_name, _ext = os.path.splitext(filename)
+#         gen_random = secrets.token_hex(8)
+#         new_file_name = gen_random + _ext
+
+#         if file.filename == '':
+#             return 'No selected file'
+
+#         print("DEBUG FILE NAME: ", file.filename)
+#         file_saved = file.save(os.path.join("static/images",new_file_name))
+#         flash(f"File Upload Successful!!", "success")
+#         return new_file_name
 
 
 
