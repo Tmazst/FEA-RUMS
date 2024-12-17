@@ -424,6 +424,7 @@ def Get_Registration_Amount(val):
 def view_member():
 
     usr = None
+    loc_pastor = None
 
     user_qrd=User.query.get(request.args.get('id'))
     if user_qrd.role == "church_user":
@@ -431,7 +432,10 @@ def view_member():
     elif user_qrd.role == "admin_user":
         usr = admin_user.query.get(user_qrd.id)
 
-    loc_pastor = admin_user.query.filter_by(church_local=usr.church_local,senior_pastor=True).first().name
+    check_loc_pastor = admin_user.query.filter_by(church_local=current_user.church_local,senior_pastor=True).first()
+    if check_loc_pastor:
+        loc_pastor = check_loc_pastor.name
+
 
     return render_template("view_member.html",user=usr,reg_details=pop_transactions,loc_pastor=loc_pastor)
 
