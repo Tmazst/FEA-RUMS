@@ -1,5 +1,5 @@
 
-from flask import Flask,render_template,url_for,redirect,request,flash,jsonify,session
+from flask import Flask,render_template,url_for,redirect,request,flash,jsonify,session,send_file
 from flask_login import login_user, LoginManager,current_user,logout_user, login_required
 from Forms import *
 from models import *
@@ -244,6 +244,13 @@ def home():
         event_details = open_event.query.filter_by(event_closed=False).first()
     
     return render_template("index.html", event_details=event_details)
+
+
+
+@app.route('/download/<filename>')
+def download_file(filename):
+    # This serves the file for download
+    return send_file(os.path.join(app.static_folder, filename), as_attachment=True)
 
 
 #Admins Opening & Closing Registrations
