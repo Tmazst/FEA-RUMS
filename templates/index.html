@@ -34,10 +34,15 @@
         <a href="/user_registration_form"><img class="poster-img" src="static/images/poster.png" /></a>
 
     </div>
-    <div style="margin: 5px auto;"><a href="https://wa.me/?text={{ url_for('static', filename='images/poster.png', _external=True) }}"
+    <div style="margin: 5px auto;gap:20px" class="general-flex">
+        <a href="https://wa.me/?text={{ url_for('static', filename='images/poster.png', _external=True) }}"
        target="_blank">
-        Share on WhatsApp
-    </a></div>
+       <img style="height:30px;opacity: 0.5;" src="static\icons\share.png">
+    </a>
+    <a href="{{ url_for('download_file', filename='poster.png') }}">
+        <img style="height:30px;opacity: 0.5;" src="static\icons\downloads.png">
+    </a>
+    </div>
     <br><br>
     {% endif %}
 
@@ -60,6 +65,8 @@
     </div><br> 
     <a href="/fea_calender"><div style="margin:20px auto;color:rgb(70, 70, 70)" class="calender gen-flex-col shadow">
         <h3 style="margin: 0;color:rgb(36, 35, 35)">FEA Calendar</h3><span>June 2024 - July 2025</span></div></a>
+        <div style="margin: 0 auto" class="general-flex cursor">
+            <span style="color:green;font-weight:600;font-size: 13px;">Share Calender</span><img style="height:30px" src="static/icons/whatsapp-icon.png" /></div>
     <br>
 
 

@@ -1,6 +1,7 @@
 
 from flask import Flask,render_template,url_for,redirect,request,flash,jsonify,session,send_file
 from flask_login import login_user, LoginManager,current_user,logout_user, login_required
+from urllib.parse import quote
 from Forms import *
 from models import *
 from flask_bcrypt import Bcrypt
@@ -246,11 +247,24 @@ def home():
     return render_template("index.html", event_details=event_details)
 
 
+@app.route('/share_image/<img_share>')
+def share_image(img_share):
+    # Name of your image and its path
+    image_name = img_share
+    image_path = os.path.join('images', image_name)  # Relative path from the static folder
+    image_url = url_for('static', filename=image_path, _external=True)  # Full URL to the image
+    
+    # WhatsApp message with the image URL
+    message = f"Check out this image from FEA: {image_url}"
+    whatsapp_link = f"https://wa.me/?text={quote(message)}"
+    
+    return render_template('share_image.html', whatsapp_link=whatsapp_link, image_url=image_url)
 
-@app.route('/download/<filename>')
+
+@app.route('/download_file/<filename>')
 def download_file(filename):
     # This serves the file for download
-    return send_file(os.path.join(app.static_folder, filename), as_attachment=True)
+    return send_file(os.path.join(app.static_folder,'images', filename), as_attachment=True)
 
 
 #Admins Opening & Closing Registrations
