@@ -30,6 +30,37 @@
     </div>{% endif %}<br><br>
     {% if event_details %}
     <h2>Register for Upcoming Mission Event</h2>
+    <div class="poster" style="margin:0 auto;width:max-content">
+        <a href="/usr_registration_form"><img style="height:400px" src="static/images/poster.png" /></a>
+
+    </div>
+    <br><br>
+    {% endif %}
+
+    <h5>Other Upcoming Mission Events</h5>
+    <div id="upcom-card" style="height:300px;box-shadow: none;" class="block-event">
+
+        <div  class="block-left-pan gen-flex-col  other_events_l">
+            <div style="z-index:1000;" class="title-cont gen-flex-col"><h1 style="margin-bottom:0;color:white">Fathers Convention</h1><h3 style="margin-top:0;color:white">30 - 11 March 2025</h3>
+                <!-- <div class="flex-grower" ></div> -->
+            </div> 
+        </div>
+        
+        <div style="" class="block-right-pan gen-flex-col other_events_r">
+            <div class="gen-flex-col event-details"><img src="static/icons/location-icon.png"/><span class="ads-tag-4">Zakhele FEA Auditorium(Old)</span></div>
+            <div class="gen-flex-col event-details"><img src="static/icons/registration-icon.png"/><span class="ads-tag-4">23 - 24 Aug 2024</span>
+                <div style="margin-bottom: 15px;" class="btns">Register</div>
+            </div>
+        </div><br>
+
+    </div><br>
+    <a href="/fea_calender"><div style="margin:20px auto;" class="btns-outlined">FEA Calendar</div></a>
+
+    <br>
+
+
+    {% if event_details %}
+
     <div id="narrow-screen" class="block-event">
         <!-- absolute to parent -->
         <div id="left-pan-phone" class="block-left-pan">
@@ -60,24 +91,6 @@
         </div>
     </div><br><br>
     {% endif %}
-
-    <h5>Other Upcoming Mission Events</h5>
-    <div id="upcom-card" style="height:300px;box-shadow: none;" class="block-event">
-
-        <div  class="block-left-pan gen-flex-col  other_events_l">
-            <div style="z-index:1000;" class="title-cont gen-flex-col"><h1 style="margin-bottom:0;color:white">Fathers Convention</h1><h3 style="margin-top:0;color:white">30 - 11 March 2025</h3>
-                <!-- <div class="flex-grower" ></div> -->
-            </div> 
-        </div>
-        
-        <div style="" class="block-right-pan gen-flex-col other_events_r">
-            <div class="gen-flex-col event-details"><img src="static/icons/location-icon.png"/><span class="ads-tag-4">Zakhele FEA Auditorium(Old)</span></div>
-            <div class="gen-flex-col event-details"><img src="static/icons/registration-icon.png"/><span class="ads-tag-4">23 - 24 Aug 2024</span>
-                <div style="margin-bottom: 15px;" class="btns">Register</div>
-            </div>
-        </div><br>
-
-    </div><br>
 
 
     <!-- <div class="cont-for-scroll" >
@@ -121,7 +134,7 @@
         <button class="scroll-btn" id="scroll-right" style="position: absolute; top: 150px; right:10px; transform: translateX(-50%);"></button>
     </div> -->
 
-    <a href="/fea_calender"><div style="margin:20px auto;" class="btns-outlined">FEA Calendar</div></a>
+    
 
 </div><br><div style="height:100px"></div>
 

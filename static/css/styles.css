@@ -2566,12 +2566,35 @@ small{
     display: none;
 }
 
+.poster{
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+
+}
+/* .poster-img{
+    height: inherit;
+} */
+
+.poster:hover{
+    transform: scale(0.9);
+    opacity: 0.7;
+}
+
 
 @media all and (max-width: 575px){
 
-
+    .poster{
+        width:100%;
+        height: auto !important;
+        padding:10px;
     
+    }
     
+    /* .poster-img{
+        height:auto;
+        width:100%;
+    } */
     .calender-cont{width: 95%;}
 
     .container-fea{
@@ -2639,6 +2662,8 @@ small{
         padding:6px 10px;
     }
 
+
+
     #sign-cap{
         font-weight: 500;
     }
@@ -2646,6 +2671,11 @@ small{
 
     #upcom-card{
         /* displ/ay: none; */
+    }
+
+    .card{
+        width:95%;
+        margin:10px auto;
     }
 
     .blck-event-upcom{
